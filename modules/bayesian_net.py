@@ -6,6 +6,7 @@
 import numpy as np
 from typing import Dict, List
 
+
 class SimpleBayesianDiagnostics:
     """
     Simplified Bayesian diagnostic model using
@@ -15,13 +16,13 @@ class SimpleBayesianDiagnostics:
     def __init__(self):
         # Prior probabilities P(Disease)
         self.priors = {
-            'flu':        0.15,
-            'covid19':    0.08,
-            'dengue':     0.05,
-            'cardiac':    0.04,
-            'diabetes':   0.10,
-            'common_cold':0.30,
-            'healthy':    0.28,
+            'flu': 0.15,
+            'covid19': 0.08,
+            'dengue': 0.05,
+            'cardiac': 0.04,
+            'diabetes': 0.10,
+            'common_cold': 0.30,
+            'healthy': 0.28,
         }
 
         # Likelihoods: P(Symptom | Disease)
@@ -92,30 +93,30 @@ class SimpleBayesianDiagnostics:
         exp_probs = {d: np.exp(v - max_log)
                      for d, v in posteriors.items()}
         total = sum(exp_probs.values())
-        return {d: round(v/total, 4) for d, v in exp_probs.items()}
+        return {d: round(v / total, 4) for d, v in exp_probs.items()}
 
     def analyze(self, percept) -> Dict:
         """Module interface for the agent"""
         posteriors = self.compute_posterior(percept.symptoms)
         top_disease = max(posteriors, key=posteriors.get)
-        top_prob    = posteriors[top_disease]
-        sorted_dx   = sorted(posteriors.items(),
-                             key=lambda x: x[1], reverse=True)
+        top_prob = posteriors[top_disease]
+        sorted_dx = sorted(posteriors.items(),
+                           key=lambda x: x[1], reverse=True)
 
         return {
-            'summary':    f"Top: {top_disease} ({top_prob:.2%})",
-            'diagnosis':  top_disease,
+            'summary': f"Top: {top_disease} ({top_prob:.2%})",
+            'diagnosis': top_disease,
             'confidence': top_prob,
             'all_posteriors': posteriors,
             'ranked_diagnoses': sorted_dx[:5]
         }
 
     def explain(self, disease: str, symptoms: List[str]) -> str:
-        symptoms_clean = [s.lower().replace(' ','_') for s in symptoms]
-        likelihoods    = self.likelihoods.get(disease, {})
+        symptoms_clean = [s.lower().replace(' ', '_') for s in symptoms]
+        likelihoods = self.likelihoods.get(disease, {})
         evidence = [
-            f"P({s}|{disease})={likelihoods.get(s,0.01):.2f}"
+            f"P({s}|{disease})={likelihoods.get(s, 0.01):.2f}"
             for s in symptoms_clean
         ]
         return f"P({disease}) = {self.priors[disease]} × " + \
-               " × ".join(evidence)
+            " × ".join(evidence)

@@ -8,33 +8,37 @@ from dataclasses import dataclass, field
 from typing import List, Dict, Optional
 import datetime
 
+
 class AgentState(Enum):
-    IDLE         = "idle"
-    COLLECTING   = "collecting_symptoms"
-    DIAGNOSING   = "diagnosing"
+    IDLE = "idle"
+    COLLECTING = "collecting_symptoms"
+    DIAGNOSING = "diagnosing"
     RECOMMENDING = "recommending"
-    PLANNING     = "planning_treatment"
-    DONE         = "done"
+    PLANNING = "planning_treatment"
+    DONE = "done"
+
 
 @dataclass
 class PatientPercept:
     """What the agent perceives from the environment"""
-    patient_id:   str
-    symptoms:     List[str]
-    age:          int
-    temperature:  float
-    heart_rate:   int
+    patient_id: str
+    symptoms: List[str]
+    age: int
+    temperature: float
+    heart_rate: int
     blood_pressure: str
-    timestamp:    str = field(
+    timestamp: str = field(
         default_factory=lambda: datetime.datetime.now().isoformat())
+
 
 @dataclass
 class AgentMemory:
     """Internal model — makes this a model-based agent"""
-    patient_history:  List[Dict]  = field(default_factory=list)
-    current_patient:  Optional[PatientPercept] = None
-    diagnosis_history: List[str]  = field(default_factory=list)
-    action_log:       List[str]   = field(default_factory=list)
+    patient_history: List[Dict] = field(default_factory=list)
+    current_patient: Optional[PatientPercept] = None
+    diagnosis_history: List[str] = field(default_factory=list)
+    action_log: List[str] = field(default_factory=list)
+
 
 class HealthcareDiagnosticAgent:
     """
@@ -52,8 +56,8 @@ class HealthcareDiagnosticAgent:
     """
 
     def __init__(self):
-        self.state   = AgentState.IDLE
-        self.memory  = AgentMemory()
+        self.state = AgentState.IDLE
+        self.memory = AgentMemory()
         self.performance_score = 0
         self._modules = {}  # Will hold sub-modules
 
@@ -87,7 +91,7 @@ class HealthcareDiagnosticAgent:
             if hasattr(module, 'analyze'):
                 result = module.analyze(self.memory.current_patient)
                 results[module_name] = result
-                self._log(f"  [{module_name}] → {result.get('summary','done')}")
+                self._log(f"  [{module_name}] → {result.get('summary', 'done')}")
 
         self.memory.diagnosis_history.append(results)
         self.state = AgentState.RECOMMENDING
@@ -104,21 +108,21 @@ class HealthcareDiagnosticAgent:
             for v in diagnosis_results.values()
             if isinstance(v, dict) and 'confidence' in v
         ]
-        avg_confidence = sum(confidences)/len(confidences) if confidences else 0.5
+        avg_confidence = sum(confidences) / len(confidences) if confidences else 0.5
 
         # Determine urgency
         urgency = self._assess_urgency(patient, avg_confidence)
 
         action_report = {
-            'patient_id':   patient.patient_id,
-            'timestamp':    patient.timestamp,
-            'symptoms':     patient.symptoms,
-            'diagnosis':    self._aggregate_diagnosis(diagnosis_results),
-            'confidence':   round(avg_confidence, 3),
-            'urgency':      urgency,
+            'patient_id': patient.patient_id,
+            'timestamp': patient.timestamp,
+            'symptoms': patient.symptoms,
+            'diagnosis': self._aggregate_diagnosis(diagnosis_results),
+            'confidence': round(avg_confidence, 3),
+            'urgency': urgency,
             'recommendations': self._generate_recommendations(
                 urgency, diagnosis_results),
-            'next_action':  self._decide_next_action(urgency)
+            'next_action': self._decide_next_action(urgency)
         }
 
         self.performance_score += (10 if avg_confidence > 0.7 else 5)
@@ -184,9 +188,9 @@ class HealthcareDiagnosticAgent:
     def _decide_next_action(self, urgency):
         actions = {
             "CRITICAL": "EMERGENCY_REFERRAL",
-            "HIGH":     "URGENT_APPOINTMENT",
-            "MEDIUM":   "SCHEDULE_FOLLOWUP",
-            "LOW":      "MONITOR_AT_HOME"
+            "HIGH": "URGENT_APPOINTMENT",
+            "MEDIUM": "SCHEDULE_FOLLOWUP",
+            "LOW": "MONITOR_AT_HOME"
         }
         return actions.get(urgency, "MONITOR_AT_HOME")
 
@@ -202,7 +206,7 @@ class HealthcareDiagnosticAgent:
 
     def get_performance(self):
         return {
-            'total_patients':    len(self.memory.patient_history),
+            'total_patients': len(self.memory.patient_history),
             'performance_score': self.performance_score,
-            'diagnoses_made':    len(self.memory.diagnosis_history)
+            'diagnoses_made': len(self.memory.diagnosis_history)
         }
