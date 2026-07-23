@@ -5,6 +5,7 @@
 
 from typing import Set, List, Dict, Tuple, Optional
 
+
 class MedicalKnowledgeBase:
     """
     First-Order Logic based medical knowledge base.
@@ -13,8 +14,8 @@ class MedicalKnowledgeBase:
     """
 
     def __init__(self):
-        self.facts:  Set[str]             = set()
-        self.rules:  List[Tuple]          = []
+        self.facts: Set[str] = set()
+        self.rules: List[Tuple] = []
         self.certainty_factors: Dict[str, float] = {}
         self._load_medical_knowledge()
 
@@ -25,34 +26,34 @@ class MedicalKnowledgeBase:
         disease_rules = [
             # (conditions,              conclusion,       certainty)
             (["fever", "cough", "fatigue"],
-             "flu_suspected",                             0.75),
+             "flu_suspected", 0.75),
             (["fever", "cough", "loss_of_smell", "fatigue"],
-             "covid19_suspected",                         0.85),
+             "covid19_suspected", 0.85),
             (["fever", "rash", "joint_pain"],
-             "dengue_suspected",                          0.80),
+             "dengue_suspected", 0.80),
             (["chest_pain", "shortness_of_breath", "sweating"],
-             "cardiac_event_suspected",                   0.90),
+             "cardiac_event_suspected", 0.90),
             (["headache", "stiff_neck", "high_fever", "light_sensitivity"],
-             "meningitis_suspected",                      0.88),
+             "meningitis_suspected", 0.88),
             (["cough", "weight_loss", "night_sweats", "fatigue"],
-             "tuberculosis_suspected",                    0.82),
+             "tuberculosis_suspected", 0.82),
             (["frequent_urination", "excessive_thirst", "blurred_vision"],
-             "diabetes_suspected",                        0.78),
+             "diabetes_suspected", 0.78),
             (["flu_suspected", "high_fever"],
-             "flu_confirmed",                             0.85),
+             "flu_confirmed", 0.85),
             (["covid19_suspected", "positive_pcr"],
-             "covid19_confirmed",                         0.99),
+             "covid19_confirmed", 0.99),
             (["cardiac_event_suspected", "elevated_troponin"],
-             "myocardial_infarction",                     0.95),
+             "myocardial_infarction", 0.95),
             # Urgency rules
             (["myocardial_infarction"],
-             "EMERGENCY",                                 1.00),
+             "EMERGENCY", 1.00),
             (["meningitis_suspected"],
-             "EMERGENCY",                                 0.95),
+             "EMERGENCY", 0.95),
             (["covid19_confirmed"],
-             "ISOLATE_AND_TREAT",                         0.99),
+             "ISOLATE_AND_TREAT", 0.99),
             (["flu_confirmed"],
-             "REST_AND_MEDICATE",                         0.90),
+             "REST_AND_MEDICATE", 0.90),
         ]
         for conditions, conclusion, cf in disease_rules:
             self.add_rule(conditions, conclusion, cf)
@@ -73,11 +74,11 @@ class MedicalKnowledgeBase:
     def forward_chain(self, verbose: bool = False) -> Dict[str, float]:
         """Forward chaining with certainty factors"""
         inferred = {}
-        changed  = True
+        changed = True
         iteration = 0
 
         while changed:
-            changed   = False
+            changed = False
             iteration += 1
             for conditions, conclusion, rule_cf in self.rules:
                 all_known = all(
@@ -87,7 +88,7 @@ class MedicalKnowledgeBase:
                     # Combine certainty factors
                     cond_cfs = [
                         self.certainty_factors.get(c,
-                            inferred.get(c, 1.0))
+                                                   inferred.get(c, 1.0))
                         for c in conditions
                     ]
                     combined_cf = rule_cf * min(cond_cfs)
@@ -105,7 +106,6 @@ class MedicalKnowledgeBase:
                        visited: Optional[Set] = None,
                        depth: int = 0) -> Tuple[bool, float]:
         """Backward chaining — prove a goal"""
-        indent  = "  " * depth
         visited = visited or set()
 
         if goal in self.facts:
@@ -117,7 +117,7 @@ class MedicalKnowledgeBase:
         for conditions, conclusion, rule_cf in self.rules:
             if conclusion == goal:
                 results = [
-                    self.backward_chain(c, visited.copy(), depth+1)
+                    self.backward_chain(c, visited.copy(), depth + 1)
                     for c in conditions
                 ]
                 if all(proved for proved, _ in results):
@@ -134,20 +134,20 @@ class MedicalKnowledgeBase:
         # Add vitals as facts
         if percept.temperature > 38.0:
             self.add_fact("fever",
-                min(1.0, (percept.temperature - 37.0) / 3.0))
+                          min(1.0, (percept.temperature - 37.0) / 3.0))
         if percept.temperature > 39.5:
             self.add_fact("high_fever", 1.0)
         if percept.heart_rate > 100:
             self.add_fact("tachycardia", 1.0)
 
         inferred = self.forward_chain()
-        diseases  = {k: v for k, v in inferred.items()
-                     if 'suspected' in k or 'confirmed' in k}
+        diseases = {k: v for k, v in inferred.items()
+                    if 'suspected' in k or 'confirmed' in k}
 
         top = max(diseases, key=diseases.get) if diseases else "Unknown"
         return {
-            'summary':    f"Inferred {len(inferred)} conclusions",
-            'diagnosis':  top,
+            'summary': f"Inferred {len(inferred)} conclusions",
+            'diagnosis': top,
             'confidence': diseases.get(top, 0.5),
             'all_inferred': inferred
         }
