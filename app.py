@@ -56,4 +56,3 @@ def build_system() -> HealthcareDiagnosticAgent:
     agent.register_module('NeuralNetwork', NeuralDiagnosticModel())
 
     return agent
-
