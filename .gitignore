@@ -1,8 +1,10 @@
 # Python & Virtual Environments
 venv/
 .venv/
+.venv312/
 env/
 __pycache__/
+.pytest_cache/
 *.py[cod]
 *$py.class
 *.so
