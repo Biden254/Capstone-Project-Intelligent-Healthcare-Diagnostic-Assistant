@@ -20,11 +20,11 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 
 class PatientInputSerializer(serializers.Serializer):
-    patient_id     = serializers.CharField(required=False, allow_blank=True, default='')
-    symptoms       = serializers.ListField(child=serializers.CharField(), allow_empty=False)
-    age            = serializers.IntegerField(min_value=0, max_value=120)
-    temperature    = serializers.FloatField()
-    heart_rate     = serializers.IntegerField(min_value=0)
+    patient_id = serializers.CharField(required=False, allow_blank=True, default='')
+    symptoms = serializers.ListField(child=serializers.CharField(), allow_empty=False)
+    age = serializers.IntegerField(min_value=0, max_value=120)
+    temperature = serializers.FloatField()
+    heart_rate = serializers.IntegerField(min_value=0)
     blood_pressure = serializers.CharField(max_length=20)
 
 

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
 import { register } from "../lib/api";
 
 export default function RegisterPage() {
@@ -62,7 +63,7 @@ export default function RegisterPage() {
         </button>
       </form>
       <p>
-        Already have an account? <a href="/login">Log in</a>
+        Already have an account? <Link href="/login">Log in</Link>
       </p>
     </div>
   );

@@ -35,9 +35,9 @@ def get_system():
     agent = HealthcareDiagnosticAgent()
     modules = {
         'KnowledgeBase': MedicalKnowledgeBase(),
-        'BayesianNet':   SimpleBayesianDiagnostics(),
-        'MLClassifier':  MLDiagnosticClassifier(),
-        'Fuzzy':         FuzzySeverityAssessor(),
+        'BayesianNet': SimpleBayesianDiagnostics(),
+        'MLClassifier': MLDiagnosticClassifier(),
+        'Fuzzy': FuzzySeverityAssessor(),
     }
     if NN_AVAILABLE:
         modules['NeuralNetwork'] = NeuralDiagnosticModel()
