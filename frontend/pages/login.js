@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
 import { login } from "../lib/api";
 
 export default function LoginPage() {
@@ -50,7 +51,7 @@ export default function LoginPage() {
         </button>
       </form>
       <p>
-        No account? <a href="/register">Register</a>
+        No account? <Link href="/register">Register</Link>
       </p>
     </div>
   );
