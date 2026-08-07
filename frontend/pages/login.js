@@ -29,11 +29,10 @@ export default function LoginPage() {
       <div className="w-full max-w-md rounded-lg border border-border bg-panel shadow-2xl overflow-hidden">
         {/* fake window titlebar */}
         <div className="flex items-center gap-3 px-4 py-3 bg-bg-dark border-b border-border">
-          <span className="text-xs text-fg-dim">auth.py — log in</span>
+          <span className="text-xs text-fg-dim">log in</span>
         </div>
 
         <div className="p-8">
-          <p className="text-xs text-green mb-1">patient@triage:~$ ./login.sh</p>
           <h1 className="text-lg font-semibold text-fg mb-6">Log in</h1>
 
           <form onSubmit={handleSubmit} className="space-y-4">

@@ -29,11 +29,10 @@ export default function RegisterPage() {
     <div className="min-h-screen flex items-center justify-center bg-bg-dark p-6">
       <div className="w-full max-w-md rounded-lg border border-border bg-panel shadow-2xl overflow-hidden">
         <div className="flex items-center gap-3 px-4 py-3 bg-bg-dark border-b border-border">
-          <span className="text-xs text-fg-dim">auth.py — register</span>
+          <span className="text-xs text-fg-dim">register</span>
         </div>
 
         <div className="p-8">
-          <p className="text-xs text-green mb-1">patient@triage:~$ ./register.sh</p>
           <h1 className="text-lg font-semibold text-fg mb-6">Create an account</h1>
 
           <form onSubmit={handleSubmit} className="space-y-4">
