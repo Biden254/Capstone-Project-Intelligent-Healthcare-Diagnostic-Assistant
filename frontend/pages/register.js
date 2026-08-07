@@ -46,7 +46,7 @@ export default function RegisterPage() {
               />
             </div>
             <div>
-              <label className="block text-xs text-fg-dim mb-1"># email (optional)</label>
+              <label className="block text-xs text-fg-dim mb-1"> email (optional)</label>
               <input
                 type="email"
                 className="w-full rounded-md border border-border bg-input px-3 py-2 text-sm text-fg outline-none focus:border-blue transition-colors"
@@ -55,7 +55,7 @@ export default function RegisterPage() {
               />
             </div>
             <div>
-              <label className="block text-xs text-fg-dim mb-1"># password (min 8 chars)</label>
+              <label className="block text-xs text-fg-dim mb-1"> password (min 8 chars)</label>
               <input
                 type="password"
                 className="w-full rounded-md border border-border bg-input px-3 py-2 text-sm text-fg outline-none focus:border-blue transition-colors"
