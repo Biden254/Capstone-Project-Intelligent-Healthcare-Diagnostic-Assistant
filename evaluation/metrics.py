@@ -9,12 +9,7 @@ import random
 from typing import Dict, List, Tuple
 
 import numpy as np
-from sklearn.metrics import (
-    accuracy_score,
-    precision_recall_fscore_support,
-    confusion_matrix,
-    classification_report,
-)
+from sklearn.metrics import (accuracy_score, precision_recall_fscore_support, confusion_matrix, classification_report,)
 
 from ai_engine.modules.agent import PatientPercept
 
