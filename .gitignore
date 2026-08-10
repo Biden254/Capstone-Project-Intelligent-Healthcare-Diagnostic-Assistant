@@ -1,6 +1,7 @@
 # Python & Virtual Environments
 venv/
 .venv/
+.flake8
 env/
 __pycache__/
 *.py[cod]
