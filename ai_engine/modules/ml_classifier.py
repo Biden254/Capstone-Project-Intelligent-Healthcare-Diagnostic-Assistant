@@ -16,6 +16,7 @@ import seaborn as sns
 import warnings
 warnings.filterwarnings('ignore')
 
+
 class MLDiagnosticClassifier:
     """
     Ensemble ML-based diagnostic classifier.
@@ -58,23 +59,23 @@ class MLDiagnosticClassifier:
 
         # Disease profiles: P(symptom | disease)
         profiles = {
-            'flu': {'fever':0.90,'cough':0.85,'fatigue':0.88,
-                              'headache':0.70,'body_aches':0.80,'loss_of_smell':0.20},
-            'covid19': {'fever':0.88,'cough':0.80,'fatigue':0.90,
-                              'loss_of_smell':0.85,'headache':0.65,'body_aches':0.60},
-            'dengue': {'fever':0.98,'rash':0.75,'joint_pain':0.85,
-                              'headache':0.90,'fatigue':0.80,'body_aches':0.88},
-            'cardiac_event': {'chest_pain':0.92,'shortness_of_breath':0.88,
-                              'fatigue':0.70,'sweating':0.75,'headache':0.30},
-            'diabetes': {'fatigue':0.82,'frequent_urination':0.95,
-                              'excessive_thirst':0.92,'blurred_vision':0.70,
-                              'weight_loss':0.50},
-            'common_cold': {'cough':0.90,'fever':0.50,'headache':0.60,
-                              'fatigue':0.55,'body_aches':0.50},
-            'tuberculosis': {'cough':0.95,'weight_loss':0.85,'night_sweats':0.80,
-                              'fatigue':0.88,'fever':0.70},
-            'meningitis': {'headache':0.95,'stiff_neck':0.90,'fever':0.92,
-                              'light_sensitivity':0.85,'fatigue':0.80},
+            'flu': {'fever': 0.90, 'cough': 0.85, 'fatigue': 0.88,
+                    'headache': 0.70, 'body_aches': 0.80, 'loss_of_smell': 0.20},
+            'covid19': {'fever': 0.88, 'cough': 0.80, 'fatigue': 0.90,
+                        'loss_of_smell': 0.85, 'headache': 0.65, 'body_aches': 0.60},
+            'dengue': {'fever': 0.98, 'rash': 0.75, 'joint_pain': 0.85,
+                       'headache': 0.90, 'fatigue': 0.80, 'body_aches': 0.88},
+            'cardiac_event': {'chest_pain': 0.92, 'shortness_of_breath': 0.88,
+                              'fatigue': 0.70, 'sweating': 0.75, 'headache': 0.30},
+            'diabetes': {'fatigue': 0.82, 'frequent_urination': 0.95,
+                         'excessive_thirst': 0.92, 'blurred_vision': 0.70,
+                         'weight_loss': 0.50},
+            'common_cold': {'cough': 0.90, 'fever': 0.50, 'headache': 0.60,
+                            'fatigue': 0.55, 'body_aches': 0.50},
+            'tuberculosis': {'cough': 0.95, 'weight_loss': 0.85, 'night_sweats': 0.80,
+                             'fatigue': 0.88, 'fever': 0.70},
+            'meningitis': {'headache': 0.95, 'stiff_neck': 0.90, 'fever': 0.92,
+                           'light_sensitivity': 0.85, 'fatigue': 0.80},
         }
 
         n_per_class = n_samples // len(profiles)
@@ -97,8 +98,8 @@ class MLDiagnosticClassifier:
     def train(self, verbose: bool = True) -> Dict:
         """Train all models and select the best one"""
         df = self._generate_synthetic_data(2000)
-        X  = df[self.SYMPTOM_FEATURES].values
-        y  = self.label_encoder.fit_transform(df['disease'])
+        X = df[self.SYMPTOM_FEATURES].values
+        y = self.label_encoder.fit_transform(df['disease'])
 
         X_train, X_test, y_train, y_test = train_test_split(
             X, y, test_size=0.2, random_state=42, stratify=y)
@@ -114,10 +115,10 @@ class MLDiagnosticClassifier:
         for name, model in self.models.items():
             model.fit(X_train, y_train)
             cv_scores = cross_val_score(model, X, y, cv=5, scoring='accuracy')
-            test_acc  = model.score(X_test, y_test)
+            test_acc = model.score(X_test, y_test)
             results[name] = {
                 'cv_mean': cv_scores.mean(),
-                'cv_std':  cv_scores.std(),
+                'cv_std': cv_scores.std(),
                 'test_acc': test_acc
             }
             if verbose:
@@ -127,8 +128,8 @@ class MLDiagnosticClassifier:
                 print(f"     Test Accuracy: {test_acc:.4f}")
 
             if test_acc > best_acc:
-                best_acc          = test_acc
-                self.best_model   = model
+                best_acc = test_acc
+                self.best_model = model
                 self.best_model_name = name
 
         self.is_trained = True
@@ -145,19 +146,18 @@ class MLDiagnosticClassifier:
         if not self.is_trained:
             self.train(verbose=False)
 
-        symptoms_clean = [s.lower().replace(' ', '_') for s in symptoms]
         features = np.array([
-            [1 if s in symptoms_clean else 0
+            [1 if s in symptoms else 0
              for s in self.SYMPTOM_FEATURES]
         ])
         pred_encoded = self.best_model.predict(features)[0]
-        pred_proba   = self.best_model.predict_proba(features)[0]
+        pred_proba = self.best_model.predict_proba(features)[0]
 
-        disease  = self.label_encoder.inverse_transform([pred_encoded])[0]
-        classes  = self.label_encoder.inverse_transform(
+        disease = self.label_encoder.inverse_transform([pred_encoded])[0]
+        classes = self.label_encoder.inverse_transform(
             range(len(pred_proba)))
         prob_map = dict(zip(classes, pred_proba))
-        top5     = sorted(prob_map.items(), key=lambda x: x[1], reverse=True)[:5]
+        top5 = sorted(prob_map.items(), key=lambda x: x[1], reverse=True)[:5]
 
         return {
             'diagnosis': disease,
@@ -181,7 +181,7 @@ class MLDiagnosticClassifier:
             self.train(verbose=False)
 
         y_pred = self.best_model.predict(self._X_test)
-        cm     = confusion_matrix(self._y_test, y_pred)
+        cm = confusion_matrix(self._y_test, y_pred)
         labels = self.label_encoder.classes_
 
         fig, axes = plt.subplots(1, 2, figsize=(16, 6))
@@ -191,7 +191,8 @@ class MLDiagnosticClassifier:
                     xticklabels=labels, yticklabels=labels, ax=axes[0])
         axes[0].set_title(f"Confusion Matrix\n({self.best_model_name})",
                           fontweight='bold')
-        axes[0].set_xlabel("Predicted"); axes[0].set_ylabel("True")
+        axes[0].set_xlabel("Predicted")
+        axes[0].set_ylabel("True")
         plt.setp(axes[0].xaxis.get_majorticklabels(), rotation=45, ha='right')
 
         # Feature Importance
