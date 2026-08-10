@@ -24,43 +24,35 @@ DISEASE_LABELS = [
 # coupling to internals of any one module).
 _PROFILES = {
     'flu': {
-        'symptoms': {'fever': 0.90, 'cough': 0.85, 'fatigue': 0.88,
-                      'headache': 0.70, 'body aches': 0.80},
+        'symptoms': {'fever': 0.90, 'cough': 0.85, 'fatigue': 0.88, 'headache': 0.70, 'body aches': 0.80},
         'temp': (37.8, 39.5), 'hr': (85, 105),
     },
     'covid19': {
-        'symptoms': {'fever': 0.88, 'cough': 0.80, 'fatigue': 0.90,
-                      'loss of smell': 0.85, 'headache': 0.65},
+        'symptoms': {'fever': 0.88, 'cough': 0.80, 'fatigue': 0.90, 'loss of smell': 0.85, 'headache': 0.65},
         'temp': (37.5, 39.2), 'hr': (85, 110),
     },
     'dengue': {
-        'symptoms': {'fever': 0.98, 'rash': 0.75, 'joint pain': 0.85,
-                      'headache': 0.90, 'fatigue': 0.80},
+        'symptoms': {'fever': 0.98, 'rash': 0.75, 'joint pain': 0.85, 'headache': 0.90, 'fatigue': 0.80},
         'temp': (38.5, 40.0), 'hr': (90, 115),
     },
     'cardiac_event': {
-        'symptoms': {'chest pain': 0.92, 'shortness of breath': 0.88,
-                      'fatigue': 0.70, 'sweating': 0.75},
+        'symptoms': {'chest pain': 0.92, 'shortness of breath': 0.88, 'fatigue': 0.70, 'sweating': 0.75},
         'temp': (36.8, 37.5), 'hr': (105, 135),
     },
     'diabetes': {
-        'symptoms': {'fatigue': 0.82, 'frequent urination': 0.95,
-                      'excessive thirst': 0.92, 'blurred vision': 0.70},
+        'symptoms': {'fatigue': 0.82, 'frequent urination': 0.95, 'excessive thirst': 0.92, 'blurred vision': 0.70},
         'temp': (36.5, 37.2), 'hr': (70, 95),
     },
     'common_cold': {
-        'symptoms': {'cough': 0.90, 'fever': 0.50, 'headache': 0.60,
-                      'fatigue': 0.55},
+        'symptoms': {'cough': 0.90, 'fever': 0.50, 'headache': 0.60, 'fatigue': 0.55},
         'temp': (36.8, 38.0), 'hr': (70, 90),
     },
     'tuberculosis': {
-        'symptoms': {'cough': 0.95, 'weight loss': 0.85,
-                      'night sweats': 0.80, 'fatigue': 0.88, 'fever': 0.70},
+        'symptoms': {'cough': 0.95, 'weight loss': 0.85, 'night sweats': 0.80, 'fatigue': 0.88, 'fever': 0.70},
         'temp': (37.2, 38.5), 'hr': (80, 100),
     },
     'meningitis': {
-        'symptoms': {'headache': 0.95, 'stiff neck': 0.90, 'fever': 0.92,
-                      'light sensitivity': 0.85, 'fatigue': 0.80},
+        'symptoms': {'headache': 0.95, 'stiff neck': 0.90, 'fever': 0.92, 'light sensitivity': 0.85, 'fatigue': 0.80},
         'temp': (38.8, 40.5), 'hr': (95, 125),
     },
 }

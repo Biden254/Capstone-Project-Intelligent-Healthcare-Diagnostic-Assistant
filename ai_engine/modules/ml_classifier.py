@@ -39,17 +39,17 @@ class MLDiagnosticClassifier:
 
     def __init__(self):
         self.models = {
-            'Decision Tree':     DecisionTreeClassifier(
+            'Decision Tree': DecisionTreeClassifier(
                 max_depth=8, criterion='entropy', random_state=42),
-            'Random Forest':     RandomForestClassifier(
+            'Random Forest': RandomForestClassifier(
                 n_estimators=100, max_depth=10, random_state=42),
             'Gradient Boosting': GradientBoostingClassifier(
                 n_estimators=100, learning_rate=0.1, random_state=42),
         }
-        self.best_model    = None
+        self.best_model = None
         self.best_model_name = None
         self.label_encoder = LabelEncoder()
-        self.is_trained    = False
+        self.is_trained = False
 
     def _generate_synthetic_data(self, n_samples: int = 2000) -> pd.DataFrame:
         """Generate realistic synthetic medical dataset"""
@@ -58,22 +58,22 @@ class MLDiagnosticClassifier:
 
         # Disease profiles: P(symptom | disease)
         profiles = {
-            'flu':           {'fever':0.90,'cough':0.85,'fatigue':0.88,
+            'flu': {'fever':0.90,'cough':0.85,'fatigue':0.88,
                               'headache':0.70,'body_aches':0.80,'loss_of_smell':0.20},
-            'covid19':       {'fever':0.88,'cough':0.80,'fatigue':0.90,
+            'covid19': {'fever':0.88,'cough':0.80,'fatigue':0.90,
                               'loss_of_smell':0.85,'headache':0.65,'body_aches':0.60},
-            'dengue':        {'fever':0.98,'rash':0.75,'joint_pain':0.85,
+            'dengue': {'fever':0.98,'rash':0.75,'joint_pain':0.85,
                               'headache':0.90,'fatigue':0.80,'body_aches':0.88},
             'cardiac_event': {'chest_pain':0.92,'shortness_of_breath':0.88,
                               'fatigue':0.70,'sweating':0.75,'headache':0.30},
-            'diabetes':      {'fatigue':0.82,'frequent_urination':0.95,
+            'diabetes': {'fatigue':0.82,'frequent_urination':0.95,
                               'excessive_thirst':0.92,'blurred_vision':0.70,
                               'weight_loss':0.50},
-            'common_cold':   {'cough':0.90,'fever':0.50,'headache':0.60,
+            'common_cold': {'cough':0.90,'fever':0.50,'headache':0.60,
                               'fatigue':0.55,'body_aches':0.50},
-            'tuberculosis':  {'cough':0.95,'weight_loss':0.85,'night_sweats':0.80,
+            'tuberculosis': {'cough':0.95,'weight_loss':0.85,'night_sweats':0.80,
                               'fatigue':0.88,'fever':0.70},
-            'meningitis':    {'headache':0.95,'stiff_neck':0.90,'fever':0.92,
+            'meningitis': {'headache':0.95,'stiff_neck':0.90,'fever':0.92,
                               'light_sensitivity':0.85,'fatigue':0.80},
         }
 
@@ -160,10 +160,10 @@ class MLDiagnosticClassifier:
         top5     = sorted(prob_map.items(), key=lambda x: x[1], reverse=True)[:5]
 
         return {
-            'diagnosis':      disease,
-            'confidence':     round(float(pred_proba[pred_encoded]), 4),
-            'top5':           top5,
-            'model_used':     self.best_model_name,
+            'diagnosis': disease,
+            'confidence': round(float(pred_proba[pred_encoded]), 4),
+            'top5': top5,
+            'model_used': self.best_model_name,
             'symptom_vector': features[0].tolist()
         }
 
@@ -197,9 +197,9 @@ class MLDiagnosticClassifier:
         # Feature Importance
         if hasattr(self.best_model, 'feature_importances_'):
             importances = self.best_model.feature_importances_
-            sorted_idx  = np.argsort(importances)[::-1][:12]
+            sorted_idx = np.argsort(importances)[::-1][:12]
             top_features = [self.SYMPTOM_FEATURES[i] for i in sorted_idx]
-            top_values   = importances[sorted_idx]
+            top_values = importances[sorted_idx]
             colors = plt.cm.RdYlGn(top_values / top_values.max())
             axes[1].barh(range(len(top_features)), top_values[::-1],
                          color=colors[::-1])
