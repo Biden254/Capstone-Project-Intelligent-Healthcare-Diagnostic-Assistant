@@ -3,15 +3,14 @@
 # Covers: Week 9 (Supervised Learning & Decision Trees)
 # ============================================================
 
-from typing import Dict, List
-
 import numpy as np
 import pandas as pd
+from typing import Dict, List
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split, cross_val_score
-from sklearn.metrics import confusion_matrix
+from sklearn.metrics import classification_report, confusion_matrix
 import matplotlib.pyplot as plt
 import seaborn as sns
 import warnings
